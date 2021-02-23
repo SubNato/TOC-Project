@@ -1,13 +1,23 @@
 package com.car;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Scanner;
+
+import edu.cmu.sphinx.api.Configuration;
+import edu.cmu.sphinx.api.LiveSpeechRecognizer;
+import edu.cmu.sphinx.api.SpeechResult;
+import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 
 public class Car {
 
 	private int speed;
 	private String state, currentState, nextState;
 	private String Stop;
-	private String signal;
+	private String signal,speechSignal;
+	
 	
 	public void off() {
 		
@@ -15,7 +25,56 @@ public class Car {
 		
 	}
 	
+	//Speech input
+	public void speech_signal() throws IOException {
+		
+		Configuration config = new Configuration();
+		
+		config.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
+		config.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
+        config.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
+		LiveSpeechRecognizer recognize = new LiveSpeechRecognizer(config);
+		
+		recognize.startRecognition(true);
+		
+		SpeechResult speechResult;
+		while((speechResult = recognize.getResult()) != null) {
+			String command = speechResult.getHypothesis();
+			System.out.println("Input Command is: "+command);
+			
+			System.out.println("\n\nright here");
+			
+			speechSignal = command;
+		}
+		/*StreamSpeechRecognizer recognizer = new StreamSpeechRecognizer(config);
+		//InputStream stream = new FileInputStream(new File("test.wav"));
+
+	        //recognizer.startRecognition();
+		SpeechResult result;
+	        while ((speechResult = recognize.getResult()) != null) {
+		    System.out.format("Hypothesis: %s\n", speechResult.getHypothesis());
+		    String command =  speechResult.getHypothesis();
+		    
+		    System.out.println("\n\n here");
+			System.out.println("Speech : "+command);
+		}
+		recognizer.stopRecognition();
+		
+		
+		LiveSpeechRecognizer recog = new LiveSpeechRecognizer(config);
+		// Start recognition process pruning previously cached data.
+		recog.startRecognition(true);
+		SpeechResult res = recognizer.getResult();
+		System.out.println("\n\n here");
+		System.out.println("Speech : ");//+command);
+		// Pause recognition process. It can be resumed then with startRecognition(false). */
+		//recognizer.stopRecognition();
+		
+	}
+		
 	
+	
+	//Regular typing input
 	public void signal() {
 		try {
 			
