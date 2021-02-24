@@ -13,10 +13,50 @@ import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 
 public class Car {
 
-	private int speed;
+	private int speed=0;
 	private String state, currentState, nextState;
 	private String Stop;
 	private String signal,speechSignal;
+	//Additions
+		
+	//  Setters and getters for speed and state
+	public  static String getState(){
+		return state;
+	} 
+	
+	public static void setSpeed(int a)
+	    {
+	        speed = a;
+	    }
+	
+		public static int getSpeed(){
+	        return speed;
+	    } 
+	
+	public  static void setState(String a)
+	    {
+	        state = a;
+	    }
+	
+	
+	public static void printCurrentState() //prints current state and speed of car
+    {
+        String a = "The car is now in the "+getState()+" state";
+        String b = "Current speed is: "+getSpeed(); 
+        System.out.println("\n" + a+"\n"+b);
+    }
+	
+	
+	
+	
+	//End of Additions
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	public void off() {
