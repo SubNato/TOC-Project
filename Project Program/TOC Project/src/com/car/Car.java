@@ -237,22 +237,30 @@ public class Car {
 						hold();
 					else if(signal.toLowerCase().equals("start"))
 						ignitionon();
+					else
+						System.out.println("Signal has been rejected");
 					break;
 				case "HOLD":
 					if(signal.toLowerCase().equals("start"))
 						enginestarted();
+					else
+						System.out.println("Signal has been rejected");
 					break;
 				case "IGNITION-ON":
 					if(signal.toLowerCase().equals("hold"))
 						hold();
 					else if(signal.toLowerCase().equals("start"))
 						off();
+					else
+						System.out.println("Signal has been rejected");
 					break;
 				case "ENGINE-STARTED":
 					if(signal.toLowerCase().equals("start"))
 						off();
 					else if(signal.toLowerCase().equals("engage"))
 						stationary();
+					else
+						System.out.println("Signal has been rejected");
 					break;
 				case "STATIONARY":
 					if(signal.toLowerCase().equals("accelerate"))
@@ -263,6 +271,8 @@ public class Car {
 						enginestarted();
 					else if(signal.toLowerCase().equals("select"))
 						inforwardmotion(1);
+					else
+						System.out.println("Signal has been rejected");
 					break;
 				case "IN-REVERSE-MOTION":
 					if(signal.toLowerCase().equals("accelerate"))
@@ -271,6 +281,8 @@ public class Car {
 						inreversemotion(-1);
 					else if(signal.toLowerCase().equals("hold"))
 						stationary();
+					else
+						System.out.println("Signal has been rejected");
 					break;
 				case "IN-FORWARD-MOTION":
 					if(signal.toLowerCase().equals("accelerate"))
@@ -279,12 +291,16 @@ public class Car {
 						inforwardmotion(-1);
 					else if(signal.toLowerCase().equals("activate"))
 						cruisecontrol();
+					else
+						System.out.println("Signal has been rejected");
 						break;
 				case "CRUISECONTROL":
 					if(signal.toLowerCase().equals("accelerate"))
 						cruisecontrol();
 					else if(signal.toLowerCase().equals("press"))
 						inforwardmotion(22); // Any value other than 0,1 and -1 could have been placed here
+					else
+						System.out.println("Signal has been rejected");
 					break;
 				}
 		}
