@@ -18,7 +18,7 @@ public class Car {
 	
 	private String currentState,nextState;
 	private String Stop;
-	private int signal;
+	private String signal;
 	private String speechSignal;
 	//Additions
 		
@@ -216,14 +216,14 @@ public class Car {
 		try {
 			
 		Scanner in = new Scanner(System.in);
-		System.out.println("Welcome to the RSC-based car model");
+		System.out.println("Welcome to UTUVCS (Designed by RSC <3)");
 			while(true) {
 				//Displays current state of the vehicle
 				printCurrentState();
 				//Display options based on state of the vehicle
 				dispOptions();
-				System.out.println("What signal are you giving? ");
-				signal = in.nextInt();
+				System.out.println("What signal are you giving?(Enter the  first word in the chosen command) ");
+				signal = in.next();
 				//HERE CAN USE IF STATEMENTS TO SEE WHERE THE CODE GOES FROM OFF STATE 
 				//TO MOVE THE CAR.
 				
@@ -233,57 +233,57 @@ public class Car {
 				//Switch statement to handle state transition
 				switch(state) {
 				case "OFF":
-					if(signal==1)
+					if(signal.toLowerCase().equals("hold"))
 						hold();
-					else if(signal==2)
+					else if(signal.toLowerCase().equals("start"))
 						ignitionon();
 					break;
 				case "HOLD":
-					if(signal==1)
+					if(signal.toLowerCase().equals("start"))
 						enginestarted();
 					break;
 				case "IGNITION-ON":
-					if(signal==1)
+					if(signal.toLowerCase().equals("hold"))
 						hold();
-					else if(signal==2)
+					else if(signal.toLowerCase().equals("start"))
 						off();
 					break;
 				case "ENGINE-STARTED":
-					if(signal==1)
+					if(signal.toLowerCase().equals("start"))
 						off();
-					else if(signal==2)
+					else if(signal.toLowerCase().equals("engage"))
 						stationary();
 					break;
 				case "STATIONARY":
-					if(signal==1)
+					if(signal.toLowerCase().equals("accelerate"))
 						stationary();
-					else if(signal==2)
+					else if(signal.toLowerCase().equals("reverse"))
 						inreversemotion(0);
-					else if(signal==3)
+					else if(signal.toLowerCase().equals("park"))
 						enginestarted();
-					else if(signal==4)
+					else if(signal.toLowerCase().equals("select"))
 						inforwardmotion(1);
 					break;
 				case "IN-REVERSE-MOTION":
-					if(signal==1)
+					if(signal.toLowerCase().equals("accelerate"))
 						inreversemotion(1);
-					else if(signal==2)
+					else if(signal.toLowerCase().equals("press"))
 						inreversemotion(-1);
-					else if(signal==3)
+					else if(signal.toLowerCase().equals("hold"))
 						stationary();
 					break;
 				case "IN-FORWARD-MOTION":
-					if(signal==1)
+					if(signal.toLowerCase().equals("accelerate"))
 						inforwardmotion(1);
-					else if(signal==2)
+					else if(signal.toLowerCase().equals("press"))
 						inforwardmotion(-1);
-					else if(signal==3)
+					else if(signal.toLowerCase().equals("activate"))
 						cruisecontrol();
 						break;
 				case "CRUISECONTROL":
-					if(signal==1)
+					if(signal.toLowerCase().equals("accelerate"))
 						cruisecontrol();
-					else if(signal==2)
+					else if(signal.toLowerCase().equals("press"))
 						inforwardmotion(22); // Any value other than 0,1 and -1 could have been placed here
 					break;
 				}
