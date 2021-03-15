@@ -6,15 +6,11 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.util.Scanner;
 
-import edu.cmu.sphinx.api.Configuration;
-import edu.cmu.sphinx.api.LiveSpeechRecognizer;
-import edu.cmu.sphinx.api.SpeechResult;
-import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 
 public class Car {
 
 	static private int speed=0;
-	static private String state;
+	static private String state="OFF";
 	
 	private String currentState,nextState;
 	private String Stop;
@@ -120,52 +116,6 @@ public class Car {
 	 
 	//end of functions that reflect state
 	
-	//Speech input
-	public void speech_signal() throws IOException {
-		
-		Configuration config = new Configuration();
-		
-		config.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
-		config.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
-        config.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
-		LiveSpeechRecognizer recognize = new LiveSpeechRecognizer(config);
-		
-		recognize.startRecognition(true);
-		
-		SpeechResult speechResult;
-		while((speechResult = recognize.getResult()) != null) {
-			String command = speechResult.getHypothesis();
-			System.out.println("Input Command is: "+command);
-			
-			System.out.println("\n\nright here");
-			
-			speechSignal = command;
-		}
-		/*StreamSpeechRecognizer recognizer = new StreamSpeechRecognizer(config);
-		//InputStream stream = new FileInputStream(new File("test.wav"));
-
-	        //recognizer.startRecognition();
-		SpeechResult result;
-	        while ((speechResult = recognize.getResult()) != null) {
-		    System.out.format("Hypothesis: %s\n", speechResult.getHypothesis());
-		    String command =  speechResult.getHypothesis();
-		    
-		    System.out.println("\n\n here");
-			System.out.println("Speech : "+command);
-		}
-		recognizer.stopRecognition();
-		
-		
-		LiveSpeechRecognizer recog = new LiveSpeechRecognizer(config);
-		// Start recognition process pruning previously cached data.
-		recog.startRecognition(true);
-		SpeechResult res = recognizer.getResult();
-		System.out.println("\n\n here");
-		System.out.println("Speech : ");//+command);
-		// Pause recognition process. It can be resumed then with startRecognition(false). */
-		//recognizer.stopRecognition();
-		
-	}
 		
 	public void dispOptions() { //Reads state and displays appropriate options to user
 		System.out.println("Available Options");
@@ -231,78 +181,7 @@ public class Car {
 				// Is going to another relevant state then the speed changes.
 				
 				//Switch statement to handle state transition
-				switch(state) {
-				case "OFF":
-					if(signal.toLowerCase().equals("hold"))
-						hold();
-					else if(signal.toLowerCase().equals("start"))
-						ignitionon();
-					else
-						System.out.println("Signal has been rejected");
-					break;
-				case "HOLD":
-					if(signal.toLowerCase().equals("start"))
-						enginestarted();
-					else
-						System.out.println("Signal has been rejected");
-					break;
-				case "IGNITION-ON":
-					if(signal.toLowerCase().equals("hold"))
-						hold();
-					else if(signal.toLowerCase().equals("start"))
-						off();
-					else
-						System.out.println("Signal has been rejected");
-					break;
-				case "ENGINE-STARTED":
-					if(signal.toLowerCase().equals("start"))
-						off();
-					else if(signal.toLowerCase().equals("engage"))
-						stationary();
-					else
-						System.out.println("Signal has been rejected");
-					break;
-				case "STATIONARY":
-					if(signal.toLowerCase().equals("accelerate"))
-						stationary();
-					else if(signal.toLowerCase().equals("reverse"))
-						inreversemotion(0);
-					else if(signal.toLowerCase().equals("park"))
-						enginestarted();
-					else if(signal.toLowerCase().equals("select"))
-						inforwardmotion(1);
-					else
-						System.out.println("Signal has been rejected");
-					break;
-				case "IN-REVERSE-MOTION":
-					if(signal.toLowerCase().equals("accelerate"))
-						inreversemotion(1);
-					else if(signal.toLowerCase().equals("press"))
-						inreversemotion(-1);
-					else if(signal.toLowerCase().equals("hold"))
-						stationary();
-					else
-						System.out.println("Signal has been rejected");
-					break;
-				case "IN-FORWARD-MOTION":
-					if(signal.toLowerCase().equals("accelerate"))
-						inforwardmotion(1);
-					else if(signal.toLowerCase().equals("press"))
-						inforwardmotion(-1);
-					else if(signal.toLowerCase().equals("activate"))
-						cruisecontrol();
-					else
-						System.out.println("Signal has been rejected");
-						break;
-				case "CRUISECONTROL":
-					if(signal.toLowerCase().equals("accelerate"))
-						cruisecontrol();
-					else if(signal.toLowerCase().equals("press"))
-						inforwardmotion(22); // Any value other than 0,1 and -1 could have been placed here
-					else
-						System.out.println("Signal has been rejected");
-					break;
-				}
+			StateChanger(signal);
 		}
 		
 		
@@ -312,6 +191,80 @@ public class Car {
 	}
 	
 	
+public  void StateChanger(String signal) //based on the inputted signal, it reads the car's state and acts accordingly
+	{
+	switch(state) {
+	case "OFF":
+		if(signal.toLowerCase().equals("hold"))
+			hold();
+		else if(signal.toLowerCase().equals("start"))
+			ignitionon();
+		else
+			System.out.println("Signal has been rejected");
+		break;
+	case "HOLD":
+		if(signal.toLowerCase().equals("start"))
+			enginestarted();
+		else
+			System.out.println("Signal has been rejected");
+		break;
+	case "IGNITION-ON":
+		if(signal.toLowerCase().equals("hold"))
+			hold();
+		else if(signal.toLowerCase().equals("start"))
+			off();
+		else
+			System.out.println("Signal has been rejected");
+		break;
+	case "ENGINE-STARTED":
+		if(signal.toLowerCase().equals("start"))
+			off();
+		else if(signal.toLowerCase().equals("engage"))
+			stationary();
+		else
+			System.out.println("Signal has been rejected");
+		break;
+	case "STATIONARY":
+		if(signal.toLowerCase().equals("accelerate"))
+			stationary();
+		else if(signal.toLowerCase().equals("reverse"))
+			inreversemotion(0);
+		else if(signal.toLowerCase().equals("park"))
+			enginestarted();
+		else if(signal.toLowerCase().equals("select"))
+			inforwardmotion(1);
+		else
+			System.out.println("Signal has been rejected");
+		break;
+	case "IN-REVERSE-MOTION":
+		if(signal.toLowerCase().equals("accelerate"))
+			inreversemotion(1);
+		else if(signal.toLowerCase().equals("press"))
+			inreversemotion(-1);
+		else if(signal.toLowerCase().equals("hold"))
+			stationary();
+		else
+			System.out.println("Signal has been rejected");
+		break;
+	case "IN-FORWARD-MOTION":
+		if(signal.toLowerCase().equals("accelerate"))
+			inforwardmotion(1);
+		else if(signal.toLowerCase().equals("press"))
+			inforwardmotion(-1);
+		else if(signal.toLowerCase().equals("activate"))
+			cruisecontrol();
+		else
+			System.out.println("Signal has been rejected");
+			break;
+	case "CRUISECONTROL":
+		if(signal.toLowerCase().equals("accelerate"))
+			cruisecontrol();
+		else if(signal.toLowerCase().equals("press"))
+			inforwardmotion(22); // Any value other than 0,1 and -1 could have been placed here
+		else
+			System.out.println("Signal has been rejected");
+		break;
+	}
+	}
 
-	
 }
